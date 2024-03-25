@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 const app = express();
-const cors = require("cors");
-const pool = require("./db");
+import cors from "cors";
+import pool from "./db";
 
 //middleware
 app.use(cors());
@@ -18,7 +18,7 @@ app.post("/todos", async(req, res)=>{
         [description]
         );
         res.json(newTodo.rows[0]);
-    }catch(err){
+    }catch(err:any){
         console.error(err.message);
     }
 });
@@ -29,7 +29,7 @@ app.get("/todos", async(req, res)=>{
     try{
         const allTodos = await pool.query("SELECT * FROM todo")
         res.json(allTodos.rows)
-    }catch(err){
+    }catch(err:any){
         console.error(err.message)
     }
 });
@@ -41,7 +41,7 @@ app.get("/todos/:id", async(req, res)=> {
         const {id} = req.params;
         const todo = await pool.query("SELECT * FROM todo WHERE todo_id=($1)", [id]);
         res.json(todo.rows[0]);
-    }catch(err){
+    }catch(err:any){
         console.error(err.message);
     }
 })
@@ -54,7 +54,7 @@ app.put("/todos/:id", async(req, res) => {
         const {description} = req.body;
         const updateTodo = await pool.query("UPDATE todo SET description = $1 where todo_id = $2", [description, id]);
         res.json("Todo was updated!")
-    }catch (err){
+    }catch (err:any){
         console.error(err.message);
     }
 })
@@ -66,7 +66,7 @@ app.delete("/todos/:id", async(req, res) => {
         const {id} = req.params;
         const deleteTodo = await pool.query("DELETE FROM todo where todo_id = $1", [id]);
         res.json("Todo was deleted!")
-    }catch (err){
+    }catch (err:any){
         console.error(err.message);
     }
 })

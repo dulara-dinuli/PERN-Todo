@@ -2,19 +2,24 @@ import React, { useEffect, useState } from "react";
 
 import EditTodo from "./EditTodo";
 
-const ListTodos = () => {
-  const [todos, setTodos] = useState([]);
+interface Todo {
+    todo_id:number;
+    description: string;
+}
+
+const ListTodos: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   //delete todo function
 
-  const deleteTodo = async id => {
+  const deleteTodo = async (id: number) => {
     try {
       const deleteTodo = await fetch(`http://localhost:5000/todos/${id}`, {
         method: "DELETE"
       });
 
-      setTodos(todos.filter(todo => todo.todo_id !== id));
-    } catch (err) {
+      setTodos(todos.filter((todo) => todo.todo_id !== id));
+    } catch (err:any) {
       console.error(err.message);
     }
   };
@@ -25,7 +30,7 @@ const ListTodos = () => {
       const jsonData = await response.json();
 
       setTodos(jsonData);
-    } catch (err) {
+    } catch (err:any) {
       console.error(err.message);
     }
   };
@@ -39,7 +44,7 @@ const ListTodos = () => {
   return (
     <div>
       {" "}
-      <table class="table mt-5 text-center">
+      <table className="table mt-5 text-center">
         <thead>
           <tr>
             <th>Description</th>
@@ -76,4 +81,3 @@ const ListTodos = () => {
 };
 
 export default ListTodos;
-
